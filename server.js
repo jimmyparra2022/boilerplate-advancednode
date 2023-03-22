@@ -35,7 +35,7 @@ myDB(async client => {
     res.render('index', { title: 'Connected to Database', message: 'Please log in', showLogin: true });
   });
 
-  app.route('/login').post(passport.authenticate('local', {failureRedirect: '/'}), (req, res) => {
+  app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
     res.redirect('/profile');
   });
 
