@@ -7,6 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const { objectID } = require('mongodb');
 const LocalStrategy = require('passport-local');
+const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -43,6 +44,7 @@ myDB(async client => {
         } else if (user) {
           res.redirect('/');
         } else {
+          const hash = bcrypt.hashSync(password, user.password);
           myDataBase.insertOne({
             username: req.body.username,
             password: req.body.password
@@ -91,7 +93,7 @@ myDB(async client => {
         return done(err);
       } else if (!user) {
         return done(null, false);
-      } else if (password !== user.password) {
+      } else if (!bcrypt.compareSync(user.password)) {
         return done(null, false);
       } else {
         return done(null, user);
