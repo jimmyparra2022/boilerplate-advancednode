@@ -38,13 +38,13 @@ myDB(async client => {
 
   app.route('/register')
     .post((req, res, next) => {
+      const hash = bcrypt.hashSync(password, user.password);
       myDataBase.findOne({ username: req.body.username }, (err, user) => {
         if (err) {
           next(err);
         } else if (user) {
           res.redirect('/');
         } else {
-          const hash = bcrypt.hashSync(password, user.password);
           myDataBase.insertOne({
             username: req.body.username,
             password: req.body.password
