@@ -1,5 +1,5 @@
 const passport = require('passport');
-const bcrypt = require('bcyrpt');
+const bcrypt = require('bcrypt');
 
 module.exports = function (app, myDataBase) {
     app.route('/').get((req, res) => {
