@@ -30,7 +30,7 @@ module.exports = function (app, myDataBase) {
         } else {
             myDataBase.insertOne({
             username: req.body.username,
-            password: req.body.password
+            password: hash
             },
             (err, doc) => {
                 if (err) {
@@ -50,9 +50,24 @@ module.exports = function (app, myDataBase) {
     )
     });
 
+    app.route('/auth/github').get(passport.authenticate('github'));
+
+    app.route('/auth/github/callback').get(passport.authenticate('github', { failureRedirect: '/' }), 
+    (req, res) => {
+        res.redirect('/profile');
+    });
+
     app.use((req, res, next) => {
         res.status(404)
             .type('text')
             .send('Not Found')
     });
 }
+
+const ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect('/');
+    }
+};
