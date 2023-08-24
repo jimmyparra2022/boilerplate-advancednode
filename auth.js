@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcrypt');
-const { objectID } = require('mongodb');
+const { ObjectID } = require('mongodb');
 const GitHubStrategy = require('passport-github').Strategy;
 
 module.exports = function (app, myDataBase) {
@@ -10,7 +10,7 @@ module.exports = function (app, myDataBase) {
     });
     
     passport.deserializeUser((id, done) => {
-        myDataBase.findOne({ _id: new objectID(id) }, (err, done) => {
+        myDataBase.findOne({ _id: new ObjectID(id) }, (err, done) => {
         done(null, doc);
         });
     });
