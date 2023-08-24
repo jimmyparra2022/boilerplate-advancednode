@@ -3,7 +3,13 @@ const bcrypt = require('bcrypt');
 
 module.exports = function (app, myDataBase) {
     app.route('/').get((req, res) => {
-        res.render('index', { title: 'Connected to Database', message: 'Please log in', showLogin: true, showRegistration: true });
+        res.render('index', {
+            title: 'Connected to Database',
+            message: 'Please log in',
+            showLogin: true,
+            showRegistration: true,
+            showSocialAuth: true
+        });
     });
 
     app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
