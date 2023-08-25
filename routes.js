@@ -69,7 +69,7 @@ module.exports = function (app, myDataBase) {
     // (req, res) => {
     //     req.session.user_id = req.user.id
     //     res.redirect('/chat');
-    });
+    // });
 
     app.use((req, res, next) => {
         res.status(404)
