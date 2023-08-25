@@ -49,7 +49,7 @@ app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }
     res.redirect('/profile');
 });
 
-app.route('/profile').get(ensureAuthenticated, (req, res) => {
+app.route('/profile').get(/*ensureAuthenticated, */(req, res) => {
     res.render('profile', { username: req.user.username });
 });
 
