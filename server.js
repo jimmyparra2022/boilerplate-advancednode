@@ -5,8 +5,7 @@ const myDB = require('./connection');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const session = require('express-session');
 const passport = require('passport');
-const bcrypt = require('bcrypt');
-// const routes = require('./routes');
+const routes = require('./routes');
 const auth = require('./auth');
 
 const app = express();
@@ -35,61 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 myDB(async client => {
   const myDataBase = await client.db('database').collection('users');
 
-  app.route('/').get((req, res) => {
-    res.render('index', {
-        title: 'Connected to Database',
-        message: 'Please log in',
-        showLogin: true,
-        showRegistration: true
-        // showSocialAuth: true
-    });
-});
-
-app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
-    res.redirect('/profile');
-});
-
-app.route('/profile').get(ensureAuthenticated, (req, res) => {
-    res.render('profile', { username: req.user.username });
-});
-
-app.route('/logout').get((req, res) => {
-    req.logout();
-    res.redirect('/');
-});
-
-app.route('/register')
-.post((req, res, next) => {
-// const hash = bcrypt.hashSync(password, user.password);
-myDataBase.findOne({ username: req.body.username }, (err, user) => {
-    if (err) {
-        next(err);
-    } else if (user) {
-        res.redirect('/');
-    } else {
-        myDataBase.insertOne({
-        username: req.body.username,
-        password: req.body.password
-        },
-        (err, doc) => {
-            if (err) {
-                res.redirect('/');
-            } else {
-            next(null, doc.ops[0]);
-            }
-    }
-    )
-    }
-},
-    passport.authenticate('local', { failureRedirect: '/' },
-    (req, res, next) => {
-    res.redirect('/profile');
-    }
-    )
-)
-});
-
-  // routes(app, myDataBase);
+  routes(app, myDataBase);
   auth(app, myDataBase);  
 
   let currentUsers = 0;
@@ -104,14 +49,6 @@ myDataBase.findOne({ username: req.body.username }, (err, user) => {
     res.render('index', { title: e, message: 'Unable to connect to database' });
   });
 });
-
-const ensureAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        res.redirect('/');
-    }
-};
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
