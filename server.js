@@ -49,7 +49,7 @@ app.route('/login').post(passport.authenticate('local', { failureRedirect: '/' }
     res.redirect('/profile');
 });
 
-app.route('/profile').get(/*ensureAuthenticated, */(req, res) => {
+app.route('/profile').get(ensureAuthenticated, (req, res) => {
     res.render('profile', { username: req.user.username });
 });
 
@@ -104,6 +104,14 @@ myDataBase.findOne({ username: req.body.username }, (err, user) => {
     res.render('index', { title: e, message: 'Unable to connect to database' });
   });
 });
+
+const ensureAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        res.redirect('/');
+    }
+};
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
