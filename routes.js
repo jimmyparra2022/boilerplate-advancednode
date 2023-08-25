@@ -2,6 +2,13 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 
 module.exports = function (app, myDataBase) {
+
+    app.use((req, res, next) => {
+        res.status(404)
+            .type('text')
+            .send('Not Found')
+    });
+    
     app.route('/').get((req, res) => {
         res.render('index', {
             title: 'Connected to Database',
@@ -70,11 +77,6 @@ module.exports = function (app, myDataBase) {
         res.redirect('/chat');
     });
 
-    app.use((req, res, next) => {
-        res.status(404)
-            .type('text')
-            .send('Not Found')
-    });
 }
 
 // const ensureAuthenticated = (req, res, next) => {
