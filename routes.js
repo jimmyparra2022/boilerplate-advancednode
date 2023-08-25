@@ -8,8 +8,8 @@ module.exports = function (app, myDataBase) {
             title: 'Connected to Database',
             message: 'Please log in',
             showLogin: true,
-            showRegistration: true,
-            showSocialAuth: true
+            showRegistration: true
+            // showSocialAuth: true
         });
     });
 
@@ -28,7 +28,7 @@ module.exports = function (app, myDataBase) {
 
     app.route('/register')
     .post((req, res, next) => {
-    const hash = bcrypt.hashSync(password, user.password);
+    // const hash = bcrypt.hashSync(password, user.password);
     myDataBase.findOne({ username: req.body.username }, (err, user) => {
         if (err) {
             next(err);
@@ -37,7 +37,7 @@ module.exports = function (app, myDataBase) {
         } else {
             myDataBase.insertOne({
             username: req.body.username,
-            password: hash
+            password: req.body.password
             },
             (err, doc) => {
                 if (err) {
@@ -57,18 +57,18 @@ module.exports = function (app, myDataBase) {
     )
     });
 
-    app.route('/chat').get(ensureAuthenticated, (req, res) => {
-        res.render('chat', {
-            user: req.user
-        });
-    });
+    // app.route('/chat').get(ensureAuthenticated, (req, res) => {
+    //     res.render('chat', {
+    //         user: req.user
+    //     });
+    // });
 
-    app.route('/auth/github').get(passport.authenticate('github'));
+    // app.route('/auth/github').get(passport.authenticate('github'));
 
-    app.route('/auth/github/callback').get(passport.authenticate('github', { failureRedirect: '/' }), 
-    (req, res) => {
-        req.session.user_id = req.user.id
-        res.redirect('/chat');
+    // app.route('/auth/github/callback').get(passport.authenticate('github', { failureRedirect: '/' }), 
+    // (req, res) => {
+    //     req.session.user_id = req.user.id
+    //     res.redirect('/chat');
     });
 
     app.use((req, res, next) => {
@@ -79,10 +79,10 @@ module.exports = function (app, myDataBase) {
 
 }
 
-const ensureAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        res.redirect('/');
-    }
-};
+// const ensureAuthenticated = (req, res, next) => {
+//     if (req.isAuthenticated()) {
+//         return next();
+//     } else {
+//         res.redirect('/');
+//     }
+// };
