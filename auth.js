@@ -20,6 +20,7 @@ module.exports = function (app, myDataBase) {
         myDataBase.findOne({username: username}, (err, user) => {
         console.log(`User ${username} attempted to log in.`);
         if (err) {
+            console.log(err);
             return done(err);
         } else if (!user) {
             return done(null, false);
