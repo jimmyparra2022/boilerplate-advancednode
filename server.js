@@ -6,7 +6,7 @@ const fccTesting = require('./freeCodeCamp/fcctesting.js');
 const session = require('express-session');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const routes = require('./routes');
+// const routes = require('./routes');
 const auth = require('./auth');
 
 const app = express();
