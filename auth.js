@@ -20,6 +20,7 @@ module.exports = function (app, myDataBase) {
         myDataBase.fineOne({username: username}, (err, user) => {
         console.log(`User ${username} attempted to log in.`);
         if (err) {
+            console.log(error);
             return done(err);
         } else if (!user) {
             return done(null, false);
