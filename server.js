@@ -10,8 +10,8 @@ const auth = require('./auth');
 
 const app = express();
 
-// const http = require('http').createServer(app);
-// const io = require('socket.io')(http);
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 app.set('view engine', 'pug');
 app.set('views', './views/pug');
@@ -37,10 +37,10 @@ myDB(async client => {
   routes(app, myDataBase);
   auth(app, myDataBase);  
 
-  // let currentUsers = 0;
+  let currentUsers = 0;
   io.on('connection', socket => {
-    // ++connectedUsers;
-    // io.emit('user count', currentUsers);
+    ++connectedUsers;
+    io.emit('user count', currentUsers);
     console.log('A user has connected');
   });
 
@@ -51,6 +51,6 @@ myDB(async client => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log('Listening on port ' + PORT);
 });
