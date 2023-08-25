@@ -33,34 +33,33 @@ module.exports = function (app, myDataBase) {
     });
 
     app.route('/register')
-    .post((req, res, next) => {
-    const hash = bcrypt.hashSync(req.body.password, 12);
-    myDataBase.findOne({ username: req.body.username }, (err, user) => {
-        if (err) {
-            next(err);
-        } else if (user) {
-            res.redirect('/');
-        } else {
-            myDataBase.insertOne({
-            username: req.body.username,
-            password: hash
-            },
-            (err, doc) => {
-                if (err) {
-                    res.redirect('/');
-                } else {
-                next(null, doc.ops[0]);
-                }
-            });
-        }
-    });
-    },
-    passport.authenticate('local', { failureRedirect: '/' },
-        (req, res, next) => {
-        res.redirect('/profile');
-        }
-    );
-    );
+        .post((req, res, next) => {
+        const hash = bcrypt.hashSync(req.body.password, 12);
+        myDataBase.findOne({ username: req.body.username }, (err, user) => {
+            if (err) {
+                next(err);
+            } else if (user) {
+                res.redirect('/');
+            } else {
+                myDataBase.insertOne({
+                username: req.body.username,
+                password: hash
+                },
+                (err, doc) => {
+                    if (err) {
+                        res.redirect('/');
+                    } else {
+                    next(null, doc.ops[0]);
+                    }
+                });
+            }
+        });
+        },
+        passport.authenticate('local', { failureRedirect: '/' },
+            (req, res, next) => {
+            res.redirect('/profile');
+            }
+        ));
 
     app.route('/auth/github').get(passport.authenticate('github'));
 

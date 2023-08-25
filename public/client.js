@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  /*public io*/
+  /*global io*/
   let socket = io();
 
   socket.on('user count', function(data) {
