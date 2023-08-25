@@ -5,11 +5,17 @@ module.exports = function (app, myDataBase) {
     
     app.route('/').get((req, res) => {
         res.render('index', {
-            title: 'Connected to Database',
+            title: 'Connected to Database!',
             message: 'Please log in',
             showLogin: true,
             showRegistration: true,
             showSocialAuth: true
+        });
+    });
+
+    app.route('/chat').get(ensureAuthenticated, (req, res) => {
+        res.render('chat', {
+            user: req.user
         });
     });
 
@@ -28,7 +34,7 @@ module.exports = function (app, myDataBase) {
 
     app.route('/register')
     .post((req, res, next) => {
-    const hash = bcrypt.hashSync(password, user.password);
+    const hash = bcrypt.hashSync(req.body.password, 12);
     myDataBase.findOne({ username: req.body.username }, (err, user) => {
         if (err) {
             next(err);
@@ -45,29 +51,22 @@ module.exports = function (app, myDataBase) {
                 } else {
                 next(null, doc.ops[0]);
                 }
+            });
         }
-        )
-        }
+    });
     },
-        passport.authenticate('local', { failureRedirect: '/' },
+    passport.authenticate('local', { failureRedirect: '/' },
         (req, res, next) => {
         res.redirect('/profile');
         }
-        )
-    )
-    });
-
-    app.route('/chat').get(ensureAuthenticated, (req, res) => {
-        res.render('chat', {
-            user: req.user
-        });
-    });
+    );
+    );
 
     app.route('/auth/github').get(passport.authenticate('github'));
 
     app.route('/auth/github/callback').get(passport.authenticate('github', { failureRedirect: '/' }), 
     (req, res) => {
-        req.session.user_id = req.user.id
+        req.session.user_id = req.user.id;
         res.redirect('/chat');
     });
 
@@ -77,7 +76,7 @@ module.exports = function (app, myDataBase) {
             .send('Not Found');
     });
 
-}
+};
 
 const ensureAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
