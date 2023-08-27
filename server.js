@@ -26,7 +26,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-fccTesting(app); //For FCC testing purposes
+fccTesting(app); // For fCC testing purposes
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,7 +38,7 @@ myDB(async client => {
   auth(app, myDataBase);  
 
   let currentUsers = 0;
-  io.on('connection', socket => {
+  io.on('connection', (socket) => {
     ++currentUsers;
     io.emit('user count', currentUsers);
     console.log('A user has connected');
@@ -52,5 +52,5 @@ myDB(async client => {
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
-  console.log('Listening on port ' + PORT);
+  console.log(`Listening on port ${PORT}`);
 });
