@@ -55,11 +55,11 @@ module.exports = function (app, myDataBase) {
             }
         });
         },
-        passport.authenticate('local', { failureRedirect: '/' },
+        passport.authenticate('local', { failureRedirect: '/' }),
             (req, res, next) => {
-            res.redirect('/profile');
+                res.redirect('/profile');
             }
-        ));
+        );
 
     app.route('/auth/github').get(passport.authenticate('github'));
 
@@ -76,6 +76,7 @@ module.exports = function (app, myDataBase) {
     });
 
 };
+
 
 const ensureAuthenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
