@@ -16,15 +16,15 @@ module.exports = function (app, myDataBase) {
         });
     });
 
-    passport.use(new LocalStrategy((username, password,) => {
-        myDataBase.findOne({username: username}, (err, user) => {
+    passport.use(new LocalStrategy((username, password, done) => {
+        myDataBase.findOne({ username: username }, (err, user) => {
         console.log(`User ${username} attempted to log in.`);
         if (err) {
             console.log(err);
             return done(err);
         } else if (!user) {
             return done(null, false);
-        } else if (!bcrypt.compareSync(user.password)) {
+        } else if (!bcrypt.compareSync(password, user.password)) {
             return done(null, false);
         } else {
             return done(null, user);
