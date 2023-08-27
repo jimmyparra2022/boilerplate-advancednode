@@ -8,11 +8,8 @@ html
     link(rel='stylesheet', href='/public/style.css')
   body
     h1.border.center FCC Advanced Node and Express
-    p.centerLooks like this page is being rendered from Pug into HTML!
-    p.center #{title}
-    p.center#pug-variable=message
-    
-    
+    p.center Looks like this page is being rendered from Pug into HTML!
+    p.center #{title} #{message}
     
     if showLogin
       hr
