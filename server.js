@@ -46,6 +46,7 @@ myDB(async client => {
     io.on('disconnect', () => {
       console.log('User Disconnected')
       --currentUsers;
+      io.emit('user count', currentUsers);
     });
 
   });
