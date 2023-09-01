@@ -44,7 +44,7 @@ myDB(async client => {
     console.log('A user has connected');
 
     socket.on('disconnect', () => {
-      console.log('User Disconnected')
+      console.log('A user has disconnected')
       --currentUsers;
       io.emit('user count', currentUsers);
     });
