@@ -7,9 +7,9 @@ $(document).ready(function () {
     $('#num-users').text(data.currentUsers + ' users online');
     let message = 
       data.username +
-      data.connected
+      (data.connected
         ? ' joined the chat'
-        : ' left the chat'
+        : ' left the chat')
     $('#messages').append('<li>').html( '<b>' + message + ( '</b>' ))
   })
 
