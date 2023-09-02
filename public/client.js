@@ -9,7 +9,7 @@ $(document).ready(function () {
       data.connected
         ? ' joined the chat'
         : ' left the chat'
-    $('#messages').append('<li>').html( '<b>' + data.username + message + ( '</b>' ))
+    $('#messages').append('<li>').html( '<b>' + message + ( '</b>' ))
   })
 
   // Form submittion with new message in field with id 'm'
