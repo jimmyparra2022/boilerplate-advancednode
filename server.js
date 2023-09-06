@@ -66,12 +66,12 @@ myDB(async client => {
       connected: true
     });
 
-    socket.on('chat message', (message) => {
-      io.emit({
+    socket.on('chat message', message => {
+      io.emit('chat message', {
         username: socket.request.user.username,
         message
       });
-    })
+    });
 
     console.log('user ' + socket.request.user.username + ' connected');
 
